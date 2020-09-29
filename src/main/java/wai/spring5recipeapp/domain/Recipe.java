@@ -1,6 +1,7 @@
 package wai.spring5recipeapp.domain;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Recipe {
@@ -32,6 +33,40 @@ public class Recipe {
     //Oppositely, if cascade is not defined here, deleting a recipe, will not delete
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
+
+    //mappedby = "recipe"
+    //=> each ingredient in the set will be mapped by property "recipe" in class Recipe
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
+    private Set<Ingredient> ingredients;
+
+    //If there is no config => results in two join table: recipe-categories and category-recipes
+    //@JoinTable can customize the join table
+    //joinColumns: id column of this class
+    //inverseJoinColumns: id column of related class
+    @ManyToMany
+    @JoinTable(name = "recipe_category",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
+
+    public Recipe() {
+    }
+
+    public Set<Ingredient> getIngredients() {
+        return ingredients;
+    }
+
+    public void setIngredients(Set<Ingredient> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
+    }
 
     public Long getId() {
         return id;

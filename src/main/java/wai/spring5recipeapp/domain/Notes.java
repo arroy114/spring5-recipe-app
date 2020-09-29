@@ -1,7 +1,6 @@
 package wai.spring5recipeapp.domain;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 public class Notes {
@@ -12,11 +11,6 @@ public class Notes {
 
     @OneToOne
     private Recipe recipe;
-
-    //mappedby = "recipe"
-    //=> each ingredient in the set will be mapped by property "recipe" in class Recipe
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
 
     @Lob //Large OBject
     private String recipeNotes;
