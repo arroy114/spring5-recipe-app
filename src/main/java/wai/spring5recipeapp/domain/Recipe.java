@@ -16,8 +16,13 @@ public class Recipe {
     private String source;
     private String url;
     private String directions;
-    //todo add
-    //private Difficulty difficulty;
+
+    //EnumType.ORDINAL is the default => persisted {EASY, MODERATE, HARD} as {1, 2, 3}
+    //EnumType.STRING => persisted as {EASY, MODERATE, HARD}
+    //Disadvantage with EnumType.ORDINAL is changing the enum, e.g. to  {VERY EASY, EASY, MODERATE, HARD}
+    // => affected previous data e.g. HARD change from 3 to 4
+    @Enumerated(value = EnumType.STRING)
+    private Difficulty difficulty;
 
     @Lob
     private Byte[] image;
@@ -27,7 +32,6 @@ public class Recipe {
     //Oppositely, if cascade is not defined here, deleting a recipe, will not delete
     @OneToOne(cascade = CascadeType.ALL)
     private Notes notes;
-
 
     public Long getId() {
         return id;
@@ -91,6 +95,14 @@ public class Recipe {
 
     public void setDirections(String directions) {
         this.directions = directions;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
     }
 
     public Byte[] getImage() {
