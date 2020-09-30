@@ -1,6 +1,7 @@
 package wai.spring5recipeapp.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,6 +17,8 @@ public class Recipe {
     private Integer servings;
     private String source;
     private String url;
+
+    @Lob
     private String directions;
 
     //EnumType.ORDINAL is the default => persisted {EASY, MODERATE, HARD} as {1, 2, 3}
@@ -37,7 +40,7 @@ public class Recipe {
     //mappedby = "recipe"
     //=> each ingredient in the set will be mapped by property "recipe" in class Recipe
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingredient> ingredients;
+    private Set<Ingredient> ingredients = new HashSet<>();
 
     //If there is no config => results in two join table: recipe-categories and category-recipes
     //@JoinTable can customize the join table
@@ -47,7 +50,7 @@ public class Recipe {
     @JoinTable(name = "recipe_category",
             joinColumns = @JoinColumn(name = "recipe_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
 
     public Recipe() {
     }
