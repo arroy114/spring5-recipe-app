@@ -1,5 +1,6 @@
 package wai.spring5recipeapp.bootstrap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j //used to logging
 @Component
 //ApplicationListener is part of Spring Framework, while CommandLineRunner is part of Spring Boot.
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
@@ -31,6 +33,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         recipeRepository.saveAll(getRecipes());
+        log.debug("Loading Bootstrap data"); //Using the lombok Slf4j to logging
     }
 
 /*    @Override
